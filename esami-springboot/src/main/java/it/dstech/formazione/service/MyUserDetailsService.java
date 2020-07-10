@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +17,7 @@ import it.dstech.formazione.models.Ruolo;
 import it.dstech.formazione.models.Utente;
 
 @Service
-public class MyUserDetailsService {
+public class MyUserDetailsService implements UserDetailsService {
 	 @Autowired
 	    private UtenteServiceDAO utenteService;
 

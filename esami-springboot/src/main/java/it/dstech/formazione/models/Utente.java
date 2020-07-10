@@ -1,5 +1,6 @@
 package it.dstech.formazione.models;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -19,10 +20,17 @@ public class Utente {
 	private String email;
 	private String username;
 	private String password;
+	private String nome;
+	private String cognome;
 	@ManyToMany(cascade = CascadeType.MERGE)
 	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_idUtente"), inverseJoinColumns = @JoinColumn(name = "ruolo_idRuolo"))
 	private Set<Ruolo> ruoli;
 	private boolean active;
+	@ManyToMany
+	@JoinTable(name = "utente_esame", joinColumns = @JoinColumn(name = "utente_idUtente"), inverseJoinColumns = @JoinColumn(name = "esame_id"))
+	private List<Esame> listaEsami;
+	
+	
 	public Long getIdUtente() {
 		return idUtente;
 	}
@@ -53,11 +61,30 @@ public class Utente {
 	public void setRuoli(Set<Ruolo> ruoli) {
 		this.ruoli = ruoli;
 	}
-	public boolean isActive() {
+	public boolean getActive() {
 		return active;
 	}
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	public String getCognome() {
+		return cognome;
+	}
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
+	}
+	public List<Esame> getListaEsami() {
+		return listaEsami;
+	}
+	public void setListaEsami(List<Esame> listaEsami) {
+		this.listaEsami = listaEsami;
+	}
+	
 
 }
