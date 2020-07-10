@@ -4,10 +4,8 @@ import java.util.List;
 
 import it.dstech.formazione.models.Utente;
 
-
-
 public interface UtenteServiceDAO {
-	
+
 	Utente add(Utente utente);
 
 	List<Utente> findAll();
@@ -22,6 +20,6 @@ public interface UtenteServiceDAO {
 
 	Utente findByUsername(String username);
 
+	Utente findByUsernameAndPassword(String username, String password);
+
 }
-
-
