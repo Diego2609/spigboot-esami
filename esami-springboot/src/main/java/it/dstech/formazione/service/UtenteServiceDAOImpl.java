@@ -1,25 +1,44 @@
 package it.dstech.formazione.service;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import it.dstech.formazione.models.Ruolo;
 import it.dstech.formazione.models.Utente;
+import it.dstech.formazione.repository.RuoloRepository;
 import it.dstech.formazione.repository.UtenteRepository;
 
 @Service
 public class UtenteServiceDAOImpl implements UtenteServiceDAO {
+	private UtenteRepository utenteRepo;
+	private RuoloRepository ruoloRepo;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
-	private UtenteRepository utenteRepo;
+	public UtenteServiceDAOImpl(UtenteRepository utenteRepo, RuoloRepository ruoloRepo,
+			BCryptPasswordEncoder bCryptPasswordEncoder) {
+		this.utenteRepo = utenteRepo;
+		this.ruoloRepo = ruoloRepo;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+	}
 
 	@Override
 	public Utente add(Utente utente) {
-
-		utenteRepo.save(utente);
-		return utente;
+		utente.setPassword(bCryptPasswordEncoder.encode(utente.getPassword()));
+		utente.setActive(true);
+		Ruolo ruolo = ruoloRepo.findByRuolo("STUDENTE");
+		utente.setRuoli(new HashSet<Ruolo>(Arrays.asList(ruolo)));
+		return utenteRepo.save(utente);
+		
 	}
+	
+
+	
 
 	@Override
 	public List<Utente> findAll() {

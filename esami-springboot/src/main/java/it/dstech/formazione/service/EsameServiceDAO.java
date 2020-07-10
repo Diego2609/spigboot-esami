@@ -16,6 +16,6 @@ public interface EsameServiceDAO {
 
 	Esame findById(Long Id);
 
-	List<Esame> findByIdUtenteOrderByVoto(Long idUtente);
+	
 
 }

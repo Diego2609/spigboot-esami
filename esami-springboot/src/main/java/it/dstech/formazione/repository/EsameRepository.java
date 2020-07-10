@@ -8,6 +8,6 @@ import it.dstech.formazione.models.Esame;
 
 public interface EsameRepository extends JpaRepository<Esame, Long> {
 
-	List<Esame> findByIdUtenteOrderByVoto(Long idUtente);
+	
 
 }

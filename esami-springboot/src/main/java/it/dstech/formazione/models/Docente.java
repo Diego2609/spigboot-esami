@@ -8,7 +8,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 @DiscriminatorValue("2")
-public class Docente {
+public class Docente extends Utente{
 
 	@OneToMany(mappedBy = "docente")
 	private List<Esame> listaEsami;

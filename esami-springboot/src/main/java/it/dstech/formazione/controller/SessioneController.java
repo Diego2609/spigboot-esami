@@ -1,6 +1,9 @@
 package it.dstech.formazione.controller;
 
+import java.util.HashSet;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,14 +13,16 @@ import org.springframework.web.servlet.ModelAndView;
 import it.dstech.formazione.models.Ruolo;
 import it.dstech.formazione.models.Utente;
 import it.dstech.formazione.service.EsameServiceDAO;
+import it.dstech.formazione.service.RuoloServiceDAO;
 import it.dstech.formazione.service.UtenteServiceDAO;
 
 @Controller
 public class SessioneController {
-	@Autowired
-	private EsameServiceDAO esameServ;
+	
 	@Autowired
 	private UtenteServiceDAO utenteServ;
+    @Autowired
+    private BCryptPasswordEncoder bCrypt;
 
 	@GetMapping(value = { "/", "/login" })
 	public ModelAndView login() {
@@ -58,7 +63,7 @@ public class SessioneController {
 	@PostMapping(value = "/login")
 	public ModelAndView access(String username, String password) {
 		ModelAndView modelAndView = new ModelAndView();
-		Utente user = utenteServ.findByUsernameAndPassword(username, password);
+		Utente user = utenteServ.findByUsernameAndPassword(username, bCrypt.encode(password));
 		if (user != null) {
 			for (Ruolo ruolo : user.getRuoli()) {
 				if (ruolo.getRuolo().equals("STUDENTE")) {
