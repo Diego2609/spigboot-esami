@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import it.dstech.formazione.models.Ruolo;
 import it.dstech.formazione.models.Utente;
 import it.dstech.formazione.service.EsameServiceDAO;
 import it.dstech.formazione.service.UtenteServiceDAO;
@@ -48,14 +49,28 @@ public class SessioneController {
 			modelAndView.setViewName("registrazione");
 		} else {
 			utenteServ.add(user);
-			modelAndView.addObject("successMessage", "User has been registered successfully");
+			modelAndView.addObject("messaggio", "User has been registered successfully");
 			modelAndView.setViewName("login");
 		}
 		return modelAndView;
 	}
 
 	@PostMapping(value = "/login")
-	public ModelAndView access() {
-
+	public ModelAndView access(String username, String password) {
+		ModelAndView modelAndView = new ModelAndView();
+		Utente user = utenteServ.findByUsernameAndPassword(username, password);
+		if (user != null) {
+			for (Ruolo ruolo : user.getRuoli()) {
+				if (ruolo.getRuolo().equals("STUDENTE")) {
+					modelAndView.setViewName("studente/home");
+					return modelAndView;
+				}
+				modelAndView.setViewName("docente/home");
+				return modelAndView;
+			}
+		}
+		modelAndView.addObject("messaggio", "User not found");
+		modelAndView.setViewName("index");
+		return modelAndView;
 	}
 }

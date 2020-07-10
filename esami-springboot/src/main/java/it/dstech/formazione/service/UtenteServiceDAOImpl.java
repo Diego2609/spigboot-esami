@@ -9,27 +9,28 @@ import it.dstech.formazione.models.Utente;
 import it.dstech.formazione.repository.UtenteRepository;
 
 @Service
-public class UtenteServiceDAOimpl implements UtenteServiceDAO{
+public class UtenteServiceDAOImpl implements UtenteServiceDAO {
 
 	@Autowired
 	private UtenteRepository utenteRepo;
+
 	@Override
 	public Utente add(Utente utente) {
-		
+
 		utenteRepo.save(utente);
 		return utente;
 	}
 
 	@Override
 	public List<Utente> findAll() {
-		
+
 		return utenteRepo.findAll();
 	}
 
 	@Override
 	public void remove(Utente utente) {
 
-		utenteRepo.delete(utente);		
+		utenteRepo.delete(utente);
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class UtenteServiceDAOimpl implements UtenteServiceDAO{
 
 	@Override
 	public Utente findById(Long Id) {
-		
+
 		return utenteRepo.findById(Id).get();
 	}
 
@@ -48,13 +49,19 @@ public class UtenteServiceDAOimpl implements UtenteServiceDAO{
 	public Utente findByCognomeAndNome(String cognome, String nome) {
 
 		return utenteRepo.findByCognomeAndNome(cognome, nome);
-		
+
 	}
 
 	@Override
 	public Utente findByUsername(String username) {
-		
+
 		return utenteRepo.findByUsername(username);
+	}
+
+	@Override
+	public Utente findByUsernameAndPassword(String username, String password) {
+
+		return utenteRepo.findByUsernameAndPassword(username, password);
 	}
 
 }
