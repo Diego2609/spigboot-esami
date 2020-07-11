@@ -60,7 +60,7 @@ public class SessioneController {
 		return modelAndView;
 	}
 
-	@PostMapping(value = "/login")
+/*	@PostMapping(value = "/login")
 	public ModelAndView access(String username, String password) {
 		ModelAndView modelAndView = new ModelAndView();
 		Utente user = utenteServ.findByUsernameAndPassword(username, bCrypt.encode(password));
@@ -77,5 +77,5 @@ public class SessioneController {
 		modelAndView.addObject("messaggio", "User not found");
 		modelAndView.setViewName("index");
 		return modelAndView;
-	}
+	}*/
 }

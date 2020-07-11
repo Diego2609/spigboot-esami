@@ -22,6 +22,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	@Autowired
 	private MyUserDetailsService userDetailsService;
+	
 
 	@Bean
 	public AuthenticationSuccessHandler sessioniAuthenticationSuccessHandler() {
@@ -43,7 +44,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/").permitAll().antMatchers(loginPage).permitAll()
 				.antMatchers("/registrazione").permitAll().antMatchers("/docente/**").hasAuthority("DOCENTE")
 				.antMatchers("/studente/**").hasAuthority("STUDENTE").anyRequest().authenticated().and().csrf()
-				.disable().formLogin().loginPage(loginPage).loginPage("/").failureUrl("/login?error=true")
+				.disable().formLogin().loginPage(loginPage).loginPage("/").successHandler(sessioniAuthenticationSuccessHandler()).failureUrl("/login?error=true")
 				.usernameParameter("username").passwordParameter("password").and().logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher(logoutPage)).logoutSuccessUrl(loginPage).and()
 				.exceptionHandling();
