@@ -26,7 +26,7 @@ public class SessioniAuthenticationSuccessHandler implements AuthenticationSucce
 			Authentication authentication) throws IOException, ServletException {
 		
 	       handle(request, response, authentication);
-	        clearAuthenticationAttributes(request);
+	      //  clearAuthenticationAttributes(request);
 	    }
 
 
@@ -44,25 +44,34 @@ public class SessioniAuthenticationSuccessHandler implements AuthenticationSucce
 	}
 	protected String determineTargetUrl(final Authentication authentication) {
 		 
-	    Map<String, String> roleTargetUrlMap = new HashMap<>();
-	    roleTargetUrlMap.put("DOCENTE", "/docente/home.html");
-	    roleTargetUrlMap.put("STUDENTE", "/studente/home.html");
-	 
-	    final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-	    for (final GrantedAuthority grantedAuthority : authorities) {
-	        String authorityName = grantedAuthority.getAuthority();
-	        if(roleTargetUrlMap.containsKey(authorityName)) {
-	            return roleTargetUrlMap.get(authorityName);
+		 boolean isEmp= false;
+	        boolean isAdmin = false;
+	        Collection<? extends GrantedAuthority> authorities
+	         = authentication.getAuthorities();
+	        for (GrantedAuthority grantedAuthority : authorities) {
+	            if (grantedAuthority.getAuthority().equals("STUDENTE")) {
+	                isEmp = true;
+	                break;
+	            } else if (grantedAuthority.getAuthority().equals("DOCENTE")) {
+	                isAdmin = true;
+	                break;
+	            }
+	        }
+
+	        if (isEmp) {
+	            return "/studente/home";
+	        } else if (isAdmin) {
+	            return "/docente/home";
+	        } else {
+	            throw new IllegalStateException();
 	        }
 	    }
-	 
-	    throw new IllegalStateException();
-	}
-	protected void clearAuthenticationAttributes(HttpServletRequest request) {
+	
+/*	protected void clearAuthenticationAttributes(HttpServletRequest request) {
 	    HttpSession session = request.getSession(false);
 	    if (session == null) {
 	        return;
 	    }
 	    session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-	}
+	}*/
 }

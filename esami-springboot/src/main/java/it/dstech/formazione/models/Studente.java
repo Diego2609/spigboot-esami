@@ -14,7 +14,7 @@ public class Studente extends Utente {
 
 	private String matricola;
 	@ManyToMany
-	@JoinTable(name = "utente_esame", joinColumns = @JoinColumn(name = "utente_idUtente"), inverseJoinColumns = @JoinColumn(name = "esame_id"))
+	@JoinTable(name = "studente_esame", joinColumns = @JoinColumn(name = "studente_idUtente"), inverseJoinColumns = @JoinColumn(name = "esame_id"))
 	private List<Esame> listaEsami;
 
 	public String getMatricola() {
