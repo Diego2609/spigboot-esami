@@ -74,4 +74,12 @@ public class Esame {
 		this.voto = voto;
 	}
 
+	public Docente getDocente() {
+		return docente;
+	}
+
+	public void setDocente(Docente docente) {
+		this.docente = docente;
+	}
+
 }

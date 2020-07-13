@@ -1,28 +1,28 @@
 package it.dstech.formazione.controller;
 
-import java.util.HashSet;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import it.dstech.formazione.models.Ruolo;
+import it.dstech.formazione.models.Docente;
+import it.dstech.formazione.models.Esame;
+import it.dstech.formazione.models.Studente;
 import it.dstech.formazione.models.Utente;
 import it.dstech.formazione.service.EsameServiceDAO;
-import it.dstech.formazione.service.RuoloServiceDAO;
 import it.dstech.formazione.service.UtenteServiceDAO;
 
 @Controller
 public class SessioneController {
-	
+
 	@Autowired
 	private UtenteServiceDAO utenteServ;
-    @Autowired
-    private BCryptPasswordEncoder bCrypt;
+	@Autowired
+	private EsameServiceDAO esameServ;
 
 	@GetMapping(value = { "/", "/login" })
 	public ModelAndView login() {
@@ -60,22 +60,31 @@ public class SessioneController {
 		return modelAndView;
 	}
 
-/*	@PostMapping(value = "/login")
-	public ModelAndView access(String username, String password) {
+	@PostMapping(value = "/docente/nuovoEsame")
+	public ModelAndView aggiungiEsame(Esame esame) {
 		ModelAndView modelAndView = new ModelAndView();
-		Utente user = utenteServ.findByUsernameAndPassword(username, bCrypt.encode(password));
-		if (user != null) {
-			for (Ruolo ruolo : user.getRuoli()) {
-				if (ruolo.getRuolo().equals("STUDENTE")) {
-					modelAndView.setViewName("studente/home");
-					return modelAndView;
-				}
-				modelAndView.setViewName("docente/home");
-				return modelAndView;
-			}
-		}
-		modelAndView.addObject("messaggio", "User not found");
-		modelAndView.setViewName("index");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Docente docente = (Docente) utenteServ.findByUsername(auth.getName());
+		docente.getListaEsami().add(esame);
+		utenteServ.edit(docente);
+		esame.setDocente(docente);
+		esameServ.add(esame);
+		modelAndView.addObject("messaggio", "Esame aggiunto correttamente");
+		modelAndView.setViewName("docente/home");
 		return modelAndView;
-	}*/
+	}
+
+	@PostMapping(value = "/studente/iscrizioneEsame")
+	public ModelAndView iscrizioneEsame(Esame esame) {
+		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Studente studente = (Studente) utenteServ.findByUsername(auth.getName());
+		esame.getListaStudenti().add(studente);
+		esameServ.edit(esame);
+		studente.getListaEsami().add(esame);
+		utenteServ.edit(studente);
+		modelAndView.addObject("messaggio", "Ti sei iscritto correttamente all'esame");
+		modelAndView.setViewName("studente/home");
+		return modelAndView;
+	}
 }
