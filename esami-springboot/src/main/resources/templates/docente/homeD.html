@@ -39,7 +39,7 @@
 				<td th:text="${esame.materia}"></td>
 				<td th:text="${esame.data}"></td>
 				<td>
-				<form  action="/studente/dettagli" method="post">
+				<form  action="/docente/dettagli" method="post">
 				<button class="btn btn-md btn-warning btn-block" type="Submit">Dettagli</button>
 			    <input type="hidden" name="id" id="id"	th:value="${esame.id}">				
 			</form>

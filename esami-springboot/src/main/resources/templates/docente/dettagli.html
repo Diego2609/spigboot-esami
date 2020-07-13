@@ -27,7 +27,7 @@
 				<td th:text="${studente.cognome}"></td>
 				
 				<td>
-				<form  action="/studente/voto" method="post">
+				<form  action="/docente/voto" method="post">
 				<button class="btn btn-md btn-warning btn-block" type="Submit">Dettagli</button>
 			    <input type="hidden" name="id" id="id"	th:value="${esame.getId()}">
 			    <input type="hidden" name="id" id="id"	th:value="${studente.idUtente}">					
