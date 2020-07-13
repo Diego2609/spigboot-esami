@@ -31,7 +31,7 @@ public class UtenteServiceDAOImpl implements UtenteServiceDAO {
 
 	@Override
 	public Utente add(Utente utente) {
-		utente.setListaEsami(new ArrayList<Esame>());
+		//utente.setListaEsami(new ArrayList<Esame>());
 		utente.setPassword(bCryptPasswordEncoder.encode(utente.getPassword()));
 		utente.setActive(true);
 		Ruolo ruolo = ruoloRepo.findByRuolo("STUDENTE");

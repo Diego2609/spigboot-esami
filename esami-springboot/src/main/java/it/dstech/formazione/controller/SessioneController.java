@@ -73,7 +73,6 @@ public class SessioneController {
 		esameServ.add(esame);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Utente docente = utenteServ.findByUsername(auth.getName());
-		docente.setListaEsami(new ArrayList<>());
 		docente.getListaEsami().add(esame);
 		utenteServ.edit(docente);
 		modelAndView.addObject("messaggio", "Esame aggiunto correttamente");

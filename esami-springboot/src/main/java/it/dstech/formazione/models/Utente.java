@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +34,7 @@ public class Utente {
 	@JoinTable(name = "utente_ruolo", joinColumns = @JoinColumn(name = "utente_idUtente"), inverseJoinColumns = @JoinColumn(name = "ruolo_idRuolo"))
 	private Set<Ruolo> ruoli;
 	private boolean active;
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "utente_esame", joinColumns = @JoinColumn(name = "utente_idUtente"), inverseJoinColumns = @JoinColumn(name = "esame_id"))
 
 	private List<Esame> listaEsami;
