@@ -1,6 +1,7 @@
 package it.dstech.formazione.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import it.dstech.formazione.models.Docente;
@@ -65,43 +67,57 @@ public class SessioneController {
 	@PostMapping(value = "/docente/nuovoEsame")
 	public ModelAndView aggiungiEsame(Esame esame) {
 		ModelAndView modelAndView = new ModelAndView();
+		esameServ.add(esame);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Docente docente = (Docente) utenteServ.findByUsername(auth.getName());
+		Utente docente = utenteServ.findByUsername(auth.getName());
 		docente.setListaEsami(new ArrayList<>());
 		docente.getListaEsami().add(esame);
 		utenteServ.edit(docente);
-		esame.setDocente(docente);
-		esameServ.add(esame);
 		modelAndView.addObject("messaggio", "Esame aggiunto correttamente");
 		modelAndView.setViewName("docente/homeD");
 		return modelAndView;
 	}
 
 	@PostMapping(value = "/studente/iscrizioneEsame")
-	public ModelAndView iscrizioneEsame(Esame esame) {
+	public ModelAndView iscrizioneEsame(@RequestParam Long id) {
 		ModelAndView modelAndView = new ModelAndView();
+		Esame esame=esameServ.findById(id);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Studente studente = (Studente) utenteServ.findByUsername(auth.getName());
+		Utente studente = utenteServ.findByUsername(auth.getName());
 		esame.getListaStudenti().add(studente);
 		esameServ.edit(esame);
 		studente.getListaEsami().add(esame);
 		utenteServ.edit(studente);
+		modelAndView.setViewName("studente/homeS");
+		List<Esame> esami=esameServ.findAll();
+		esami.removeAll(studente.getListaEsami());		
+		modelAndView.addObject("listaEsami", esami);
+		modelAndView.addObject("listaEsamiIscritti", studente.getListaEsami());
 		modelAndView.addObject("messaggio", "Ti sei iscritto correttamente all'esame");
 		modelAndView.setViewName("studente/homeS");
 		return modelAndView;
 	}
 	@GetMapping(value = { "/studente/homeS" })
-	public ModelAndView Studente() {
+	public ModelAndView studente() {
 		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Utente studente = utenteServ.findByUsername(auth.getName());
 		modelAndView.setViewName("studente/homeS");
-		modelAndView.addObject("listaEsami", esameServ.findAll());
+		List<Esame> esami=esameServ.findAll();
+		esami.removeAll(studente.getListaEsami());		
+		modelAndView.addObject("listaEsami", esami);
+		modelAndView.addObject("listaEsamiIscritti", studente.getListaEsami());
 		return modelAndView;
 	}
+	
 	@GetMapping(value = { "/docente/homeD" })
-	public ModelAndView Docente() {
+	public ModelAndView docente() {
 		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Utente docente = utenteServ.findByUsername(auth.getName());
 		modelAndView.setViewName("docente/homeD");
 		modelAndView.addObject("esame", new Esame());
+		modelAndView.addObject("listaEsamiCreati", docente.getListaEsami());
 		return modelAndView;
 	}
 }

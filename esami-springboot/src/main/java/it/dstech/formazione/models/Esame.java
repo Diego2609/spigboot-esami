@@ -3,6 +3,7 @@ package it.dstech.formazione.models;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,64 +23,49 @@ public class Esame {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@ManyToOne
-	@JoinColumn(name = "idUtente")
-	private Docente docente;
 	private String materia;
 	@JsonFormat(pattern = "dd-MM-yyyy ")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDateTime data;
 	@ManyToMany
-	@JoinTable(name = "esame_studente", joinColumns = @JoinColumn(name = "esame_id"), inverseJoinColumns = @JoinColumn(name = "studente_idUtente"))
-	private List<Studente> listaStudenti;
-	private int voto;
-
+	@JoinTable(name = "esame_utente", joinColumns = @JoinColumn(name = "esame_id"), inverseJoinColumns = @JoinColumn(name = "utente_idUtente"))
+	private List<Utente> listaStudenti;
+	private Integer voto;
+	
+	
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 	public String getMateria() {
 		return materia;
 	}
-
 	public void setMateria(String materia) {
 		this.materia = materia;
 	}
-
 	public LocalDateTime getData() {
 		return data;
 	}
-
 	public void setData(LocalDateTime data) {
 		this.data = data;
 	}
-
-	public List<Studente> getListaStudenti() {
+	public List<Utente> getListaStudenti() {
 		return listaStudenti;
 	}
-
-	public void setListaStudenti(List<Studente> listaStudenti) {
+	public void setListaStudenti(List<Utente> listaStudenti) {
 		this.listaStudenti = listaStudenti;
 	}
-
-	public int getVoto() {
+	public Integer getVoto() {
 		return voto;
 	}
-
-	public void setVoto(int voto) {
+	public void setVoto(Integer voto) {
 		this.voto = voto;
 	}
 
-	public Docente getDocente() {
-		return docente;
-	}
+	
 
-	public void setDocente(Docente docente) {
-		this.docente = docente;
-	}
+	
 
 }

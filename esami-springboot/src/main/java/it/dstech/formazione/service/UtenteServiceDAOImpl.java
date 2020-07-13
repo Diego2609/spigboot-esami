@@ -1,5 +1,6 @@
 package it.dstech.formazione.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import it.dstech.formazione.models.Esame;
 import it.dstech.formazione.models.Ruolo;
 import it.dstech.formazione.models.Utente;
 import it.dstech.formazione.repository.RuoloRepository;
@@ -29,6 +31,7 @@ public class UtenteServiceDAOImpl implements UtenteServiceDAO {
 
 	@Override
 	public Utente add(Utente utente) {
+		utente.setListaEsami(new ArrayList<Esame>());
 		utente.setPassword(bCryptPasswordEncoder.encode(utente.getPassword()));
 		utente.setActive(true);
 		Ruolo ruolo = ruoloRepo.findByRuolo("STUDENTE");
