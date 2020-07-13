@@ -38,8 +38,15 @@ public class Utente {
 
 	private List<Esame> listaEsami;
 	
+	@OneToMany(mappedBy= "utente")
+	private List<Esito> listaEsiti;
 	
-	
+	public List<Esito> getListaEsiti() {
+		return listaEsiti;
+	}
+	public void setListaEsiti(List<Esito> listaEsiti) {
+		this.listaEsiti = listaEsiti;
+	}
 	public Long getIdUtente() {
 		return idUtente;
 	}

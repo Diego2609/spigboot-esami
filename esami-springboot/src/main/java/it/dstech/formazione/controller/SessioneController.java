@@ -15,14 +15,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import it.dstech.formazione.models.Docente;
 import it.dstech.formazione.models.Esame;
+import it.dstech.formazione.models.Esito;
 import it.dstech.formazione.models.Studente;
 import it.dstech.formazione.models.Utente;
 import it.dstech.formazione.service.EsameServiceDAO;
+import it.dstech.formazione.service.EsitoServiceDAO;
 import it.dstech.formazione.service.UtenteServiceDAO;
 
 @Controller
 public class SessioneController {
-
+    @Autowired
+    private EsitoServiceDAO esitoServ;
 	@Autowired
 	private UtenteServiceDAO utenteServ;
 	@Autowired
@@ -120,4 +123,27 @@ public class SessioneController {
 		modelAndView.addObject("listaEsamiCreati", docente.getListaEsami());
 		return modelAndView;
 	}
+	@GetMapping(value = { "/docente/dettagli" })
+	public ModelAndView dettagli(@RequestParam Long id) {
+		ModelAndView modelAndView = new ModelAndView();
+		Esame esame=esameServ.findById(id);
+		modelAndView.addObject("esame", esame);
+		modelAndView.setViewName("docente/dettagli");
+		return modelAndView;
+	}
+	@GetMapping(value = { "/docente/voto" })
+	public ModelAndView voto(@RequestParam Long id, @RequestParam Long idUtente) {
+		ModelAndView modelAndView = new ModelAndView();
+		Esito esito = esitoServ.findByUtenteAndEsame(utenteServ.findById(idUtente), esameServ.findById(id));
+		if (esito == null) {
+			esito = new Esito();
+			esito.setUtente(utenteServ.findById(idUtente));
+			esito.setEsame(esameServ.findById(id));
+			
+		} 
+		modelAndView.addObject("esito", esito);
+		modelAndView.setViewName("docente/voto");
+		return modelAndView;
+	}
+	
 }
