@@ -7,14 +7,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 public class SessioniAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+//private EsameServiceDAO esameServ;
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 	@Override
@@ -29,6 +32,11 @@ public class SessioniAuthenticationSuccessHandler implements AuthenticationSucce
 			throws IOException {
 
 		String targetUrl = determineTargetUrl(authentication);
+//		if("/studente/home".equals(targetUrl)) {
+//			request.setAttribute("listaEsami", esameServ.findAll());
+//		} else {
+//			request.setAttribute("listaEsami", esameServ.findAll());
+//		}
 
 		redirectStrategy.sendRedirect(request, response, targetUrl);
 	}
@@ -49,9 +57,9 @@ public class SessioniAuthenticationSuccessHandler implements AuthenticationSucce
 		}
 
 		if (isEmp) {
-			return "/studente/home";
+			return "/studente/homeS";
 		} else if (isAdmin) {
-			return "/docente/home";
+			return "/docente/homeD";
 		} else {
 			throw new IllegalStateException();
 		}

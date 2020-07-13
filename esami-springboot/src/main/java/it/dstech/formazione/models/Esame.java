@@ -23,7 +23,7 @@ public class Esame {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@ManyToOne
-	@JoinColumn(name = "docente_idUtente")
+	@JoinColumn(name = "idUtente")
 	private Docente docente;
 	private String materia;
 	@JsonFormat(pattern = "dd-MM-yyyy ")

@@ -1,5 +1,7 @@
 package it.dstech.formazione.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -65,12 +67,13 @@ public class SessioneController {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Docente docente = (Docente) utenteServ.findByUsername(auth.getName());
+		docente.setListaEsami(new ArrayList<>());
 		docente.getListaEsami().add(esame);
 		utenteServ.edit(docente);
 		esame.setDocente(docente);
 		esameServ.add(esame);
 		modelAndView.addObject("messaggio", "Esame aggiunto correttamente");
-		modelAndView.setViewName("docente/home");
+		modelAndView.setViewName("docente/homeD");
 		return modelAndView;
 	}
 
@@ -84,7 +87,21 @@ public class SessioneController {
 		studente.getListaEsami().add(esame);
 		utenteServ.edit(studente);
 		modelAndView.addObject("messaggio", "Ti sei iscritto correttamente all'esame");
-		modelAndView.setViewName("studente/home");
+		modelAndView.setViewName("studente/homeS");
+		return modelAndView;
+	}
+	@GetMapping(value = { "/studente/homeS" })
+	public ModelAndView Studente() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("studente/homeS");
+		modelAndView.addObject("listaEsami", esameServ.findAll());
+		return modelAndView;
+	}
+	@GetMapping(value = { "/docente/homeD" })
+	public ModelAndView Docente() {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("docente/homeD");
+		modelAndView.addObject("esame", new Esame());
 		return modelAndView;
 	}
 }
