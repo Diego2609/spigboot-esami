@@ -22,4 +22,5 @@ public interface UtenteServiceDAO {
 
 	Utente findByUsernameAndPassword(String username, String password);
 
+	Double media(Utente u);
 }

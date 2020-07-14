@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import it.dstech.formazione.models.Esame;
+import it.dstech.formazione.models.Esito;
 import it.dstech.formazione.models.Ruolo;
 import it.dstech.formazione.models.Utente;
 import it.dstech.formazione.repository.RuoloRepository;
@@ -86,5 +87,29 @@ public class UtenteServiceDAOImpl implements UtenteServiceDAO {
 
 		return utenteRepo.findByUsernameAndPassword(username, password);
 	}
+
+	@Override
+	public Double media(Utente u) {
+		
+		 int somma=0;
+		 int count=0;
+		 for (Esame esame : u.getListaEsami()) {
+				
+			 for (Esito esito : esame.getEsito()) {
+				 
+				 if(esito.getUtente().getIdUtente()==u.getIdUtente()) {
+					 
+					 if(esito.getVoto()>=18) {
+						 somma += esito.getVoto();
+						 count++;
+					 }
+				 }
+				
+			}
+		 }	
+		return (double) (somma/count);
+	}
+	
+	
 
 }

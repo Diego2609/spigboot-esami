@@ -95,6 +95,13 @@ public class SessioneController {
 		esami.removeAll(studente.getListaEsami());
 		modelAndView.addObject("listaEsami", esami);
 		modelAndView.addObject("listaEsamiIscritti", studente.getListaEsami());
+		Double media= utenteServ.media(studente);
+		if(media!=null)
+		 modelAndView.addObject("media",media );
+		else {
+			modelAndView.addObject("media","non hai svolto ancora esami" );
+
+		}			
 		modelAndView.addObject("messaggio", "Ti sei iscritto correttamente all'esame");
 		modelAndView.setViewName("studente/homeS");
 		return modelAndView;
@@ -110,6 +117,13 @@ public class SessioneController {
 		esami.removeAll(studente.getListaEsami());
 		modelAndView.addObject("listaEsami", esami);
 		modelAndView.addObject("listaEsamiIscritti", studente.getListaEsami());
+		Double media= utenteServ.media(studente);
+		if(media!=null)
+		 modelAndView.addObject("media",media );
+		else {
+			modelAndView.addObject("media","non hai svolto ancora esami" );
+
+		}			
 		return modelAndView;
 	}
 
