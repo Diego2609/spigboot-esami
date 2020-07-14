@@ -107,6 +107,9 @@ public class UtenteServiceDAOImpl implements UtenteServiceDAO {
 				
 			}
 		 }	
+		 if (count==0) {
+			return null;
+		}
 		return (double) (somma/count);
 	}
 	

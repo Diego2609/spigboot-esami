@@ -104,6 +104,7 @@ public class SessioneController {
 		}			
 		modelAndView.addObject("messaggio", "Ti sei iscritto correttamente all'esame");
 		modelAndView.setViewName("studente/homeS");
+		modelAndView.addObject("idUtente", studente.getIdUtente());
 		return modelAndView;
 	}
 
@@ -123,7 +124,8 @@ public class SessioneController {
 		else {
 			modelAndView.addObject("media","non hai svolto ancora esami" );
 
-		}			
+		}		
+		modelAndView.addObject("idUtente", studente.getIdUtente());
 		return modelAndView;
 	}
 
@@ -165,12 +167,10 @@ public class SessioneController {
 	public ModelAndView esito(Esito esito,@RequestParam("idUtente")Long idUtente,@RequestParam("idEsame")Long idEsame,
 			@RequestParam("idEsito")Long idEsito) {
 		ModelAndView modelAndView = new ModelAndView();
-		 
 		esito.setId(idEsito);
 		esito.setEsame(esameServ.findById(idEsame));
 		esito.setUtente(utenteServ.findById(idUtente));
-		esitoServ.add(esito);
-			
+		esitoServ.add(esito);	
 		Utente utente = esito.getUtente();
 		Esame esame = esito.getEsame();
 		if (utente.getListaEsiti() == null) {
@@ -190,8 +190,6 @@ public class SessioneController {
 		modelAndView.setViewName("docente/homeD");
 		modelAndView.addObject("listaEsamiCreati", docente.getListaEsami());
 		modelAndView.addObject("esame", new Esame());
-
-
 		return modelAndView;
 	}
 

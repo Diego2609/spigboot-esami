@@ -2,25 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
- <title>Spring Security Tutorial</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<title>Spring Security Tutorial</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+<div th:with="id=${idUtente}">
+	<h2>
+		<span class="text-success" th:utext="${messaggio}"></span>
+	</h2>
 
- <h2><span class="text-success" th:utext="${messaggio}"></span></h2>
- 
- la media è : <p th:text ="${media}"></p>
- Esami Dove Gia Sei Iscritto
-<table class="table table-striped table-responsive-md">
+	la media è :
+	<p th:text="${media}"></p>
+	Esami Dove Gia Sei Iscritto
+	<table class="table table-striped table-responsive-md">
 		<thead>
 			<tr>
 				<th>Id Esame</th>
 				<th>Materia</th>
 				<th>Data</th>
-				<th>voto</th>
+				<th>Voto</th>
+
 			</tr>
 		</thead>
 		<tbody>
@@ -28,19 +35,22 @@
 				<td th:text="${esame.id}"></td>
 				<td th:text="${esame.materia}"></td>
 				<td th:text="${esame.data}"></td>
-			
-				
+				<td th:each="esito : ${esame.esito}"><label
+					th:if="${esito.utente.idUtente==id}"><span
+						th:if="${esito.voto<18}">BOCCIATO</span><span
+						th:unless="${esito.voto<18}"><span th:text=${esito.voto}></span></span></label></td>
+
 			</tr>
-			</tbody>
-			</table>
-	
+		</tbody>
+	</table>
+
 	<table class="table table-striped table-responsive-md">
 		<thead>
 			<tr>
 				<th>Id Esame</th>
 				<th>Materia</th>
 				<th>Data</th>
-				<th>voto</th>
+				<th>Iscriviti</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -48,22 +58,22 @@
 				<td th:text="${esame.id}"></td>
 				<td th:text="${esame.materia}"></td>
 				<td th:text="${esame.data}"></td>
-			
+
 				<td>
-				<form  action="/studente/iscrizioneEsame" method="post">
-				<button class="btn btn-md btn-warning btn-block" type="Submit">Iscriviti</button>
-			    <input type="hidden" name="id" id="id"	th:value="${esame.id}">				
-			</form>
-			</td>
+					<form action="/studente/iscrizioneEsame" method="post">
+						<button class="btn btn-md btn-warning btn-block" type="Submit">Iscriviti</button>
+						<input type="hidden" name="id" id="id" th:value="${esame.id}">
+					</form>
+				</td>
 			</tr>
 		</tbody>
 	</table>
-		
-	
 
 
 
 
-	
+
+</div>
+
 </body>
 </html>
