@@ -102,6 +102,80 @@ public class Utente {
 	public void setListaEsami(List<Esame> listaEsami) {
 		this.listaEsami = listaEsami;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (active ? 1231 : 1237);
+		result = prime * result + ((cognome == null) ? 0 : cognome.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((idUtente == null) ? 0 : idUtente.hashCode());
+		result = prime * result + ((listaEsami == null) ? 0 : listaEsami.hashCode());
+		result = prime * result + ((listaEsiti == null) ? 0 : listaEsiti.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((ruoli == null) ? 0 : ruoli.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Utente other = (Utente) obj;
+		if (active != other.active)
+			return false;
+		if (cognome == null) {
+			if (other.cognome != null)
+				return false;
+		} else if (!cognome.equals(other.cognome))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (idUtente == null) {
+			if (other.idUtente != null)
+				return false;
+		} else if (!idUtente.equals(other.idUtente))
+			return false;
+		if (listaEsami == null) {
+			if (other.listaEsami != null)
+				return false;
+		} else if (!listaEsami.equals(other.listaEsami))
+			return false;
+		if (listaEsiti == null) {
+			if (other.listaEsiti != null)
+				return false;
+		} else if (!listaEsiti.equals(other.listaEsiti))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (ruoli == null) {
+			if (other.ruoli != null)
+				return false;
+		} else if (!ruoli.equals(other.ruoli))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
 
 	
 	

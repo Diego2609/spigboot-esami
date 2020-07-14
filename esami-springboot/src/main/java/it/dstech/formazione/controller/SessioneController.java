@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -140,7 +141,6 @@ public class SessioneController {
 			esito = new Esito();
 			esito.setUtente(utenteServ.findById(idUtente));
 			esito.setEsame(esameServ.findById(id));
-			esitoServ.add(esito);
 		}
 		modelAndView.addObject("esito", esito);
 		modelAndView.setViewName("docente/voto");
@@ -148,10 +148,15 @@ public class SessioneController {
 	}
 
 	@PostMapping(value = "/docente/esito")
-	public ModelAndView esito(@RequestParam Long id, Esito esito) {
+	public ModelAndView esito(Esito esito,@RequestParam("idUtente")Long idUtente,@RequestParam("idEsame")Long idEsame,
+			@RequestParam("idEsito")Long idEsito) {
 		ModelAndView modelAndView = new ModelAndView();
-		Esito esitoComposto = esitoServ.findById(id);
-		esitoComposto.setVoto(esito.getVoto());
+		 
+		esito.setId(idEsito);
+		esito.setEsame(esameServ.findById(idEsame));
+		esito.setUtente(utenteServ.findById(idUtente));
+		esitoServ.add(esito);
+			
 		Utente utente = esito.getUtente();
 		Esame esame = esito.getEsame();
 		if (utente.getListaEsiti() == null) {
@@ -161,15 +166,17 @@ public class SessioneController {
 		if (esame.getEsito() == null) {
 			esame.setEsito(new ArrayList<>());
 		}
+		utente.getListaEsiti().add(esito);
+		utenteServ.edit(utente);		
 		esame.getEsito().add(esito);
-		utenteServ.edit(utente);
 		esameServ.edit(esame);
-		esitoServ.add(esito);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Utente docente = utenteServ.findByUsername(auth.getName());
 		modelAndView.addObject("messaggio", "voto aggiunto");
 		modelAndView.setViewName("docente/homeD");
 		modelAndView.addObject("listaEsamiCreati", docente.getListaEsami());
+		modelAndView.addObject("esame", new Esame());
+
 
 		return modelAndView;
 	}

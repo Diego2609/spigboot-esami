@@ -1,8 +1,11 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
+	
 <head>
 <title>Voto</title>
+
 <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}" />
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -13,14 +16,21 @@
 </head>
 <body>
 
- <form autocomplete="off" action="#" th:action="@{/docente/esito}"
-                  th:object="${esito}" method="post" class="form-horizontal"
-                  role="form">
+ <form  action="/docente/esito" method="post" th:object="${esito}" class="form-horizontal">
+ 
                  <label th:if="${esito.getVoto()}!=null"><span th:text="${esito.getVoto()}"></span></label>
-                 <label th:unless="${esito.getVoto()}!=null"><input type="number" th:field="*{voto}" placeholder="Voto" min="0" max="30">
-                  <input type="hidden" name="id" id="id"	th:value="${esito.getId()}">
-                 <button type="submit" class="btn btn-primary"></button></label>
+                 <label th:unless="${esito.getVoto()}!=null">                          
+                  <input type="number" th:field="*{voto}" placeholder="Voto" min="0" max="30"></label>
+                  
+                  <input type="hidden" name="idEsito" th:value="${esito.id}">                   
+                  <input type="hidden" name="idUtente" th:value="${esito.utente.getIdUtente()}"> 
+                  <input type="hidden" name="idEsame" th:value="${esito.esame.getId()}"> 
+                  
+                 <input type="submit" class="btn btn-primary">
 </form>
+
+
+
 
 </body>
 </html>
