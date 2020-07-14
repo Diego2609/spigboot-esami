@@ -24,8 +24,8 @@ import it.dstech.formazione.service.UtenteServiceDAO;
 
 @Controller
 public class SessioneController {
-    @Autowired
-    private EsitoServiceDAO esitoServ;
+	@Autowired
+	private EsitoServiceDAO esitoServ;
 	@Autowired
 	private UtenteServiceDAO utenteServ;
 	@Autowired
@@ -76,6 +76,7 @@ public class SessioneController {
 		docente.getListaEsami().add(esame);
 		utenteServ.edit(docente);
 		modelAndView.addObject("messaggio", "Esame aggiunto correttamente");
+		modelAndView.addObject("listaEsamiCreati", docente.getListaEsami());
 		modelAndView.setViewName("docente/homeD");
 		return modelAndView;
 	}
@@ -83,7 +84,7 @@ public class SessioneController {
 	@PostMapping(value = "/studente/iscrizioneEsame")
 	public ModelAndView iscrizioneEsame(@RequestParam Long id) {
 		ModelAndView modelAndView = new ModelAndView();
-		Esame esame=esameServ.findById(id);
+		Esame esame = esameServ.findById(id);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Utente studente = utenteServ.findByUsername(auth.getName());
 		esame.getListaStudenti().add(studente);
@@ -91,27 +92,28 @@ public class SessioneController {
 		studente.getListaEsami().add(esame);
 		utenteServ.edit(studente);
 		modelAndView.setViewName("studente/homeS");
-		List<Esame> esami=esameServ.findAll();
-		esami.removeAll(studente.getListaEsami());		
+		List<Esame> esami = esameServ.findAll();
+		esami.removeAll(studente.getListaEsami());
 		modelAndView.addObject("listaEsami", esami);
 		modelAndView.addObject("listaEsamiIscritti", studente.getListaEsami());
 		modelAndView.addObject("messaggio", "Ti sei iscritto correttamente all'esame");
 		modelAndView.setViewName("studente/homeS");
 		return modelAndView;
 	}
+
 	@GetMapping(value = { "/studente/homeS" })
 	public ModelAndView studente() {
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Utente studente = utenteServ.findByUsername(auth.getName());
 		modelAndView.setViewName("studente/homeS");
-		List<Esame> esami=esameServ.findAll();
-		esami.removeAll(studente.getListaEsami());		
+		List<Esame> esami = esameServ.findAll();
+		esami.removeAll(studente.getListaEsami());
 		modelAndView.addObject("listaEsami", esami);
 		modelAndView.addObject("listaEsamiIscritti", studente.getListaEsami());
 		return modelAndView;
 	}
-	
+
 	@GetMapping(value = { "/docente/homeD" })
 	public ModelAndView docente() {
 		ModelAndView modelAndView = new ModelAndView();
@@ -122,15 +124,17 @@ public class SessioneController {
 		modelAndView.addObject("listaEsamiCreati", docente.getListaEsami());
 		return modelAndView;
 	}
-	@GetMapping(value = { "/docente/dettagli" })
+
+	@PostMapping(value = { "/docente/dettagli" })
 	public ModelAndView dettagli(@RequestParam Long id) {
 		ModelAndView modelAndView = new ModelAndView();
-		Esame esame=esameServ.findById(id);
+		Esame esame = esameServ.findById(id);
 		modelAndView.addObject("esame", esame);
 		modelAndView.setViewName("docente/dettagli");
 		return modelAndView;
 	}
-	@GetMapping(value = { "/docente/voto" })
+
+	@PostMapping(value = { "/docente/voto" })
 	public ModelAndView voto(@RequestParam Long id, @RequestParam Long idUtente) {
 		ModelAndView modelAndView = new ModelAndView();
 		Esito esito = esitoServ.findByUtenteAndEsame(utenteServ.findById(idUtente), esameServ.findById(id));
@@ -138,11 +142,36 @@ public class SessioneController {
 			esito = new Esito();
 			esito.setUtente(utenteServ.findById(idUtente));
 			esito.setEsame(esameServ.findById(id));
-			
-		} 
+			esitoServ.add(esito);
+		}
 		modelAndView.addObject("esito", esito);
 		modelAndView.setViewName("docente/voto");
 		return modelAndView;
 	}
-	
+
+	@PostMapping(value = "/docente/esito")
+	public ModelAndView esito(Esito esito) {
+		ModelAndView modelAndView = new ModelAndView();
+		Utente utente = esito.getUtente();
+		Esame esame = esito.getEsame();
+		if (utente.getListaEsiti() == null) {
+			utente.setListaEsami(new ArrayList<>());
+		}
+		utente.getListaEsiti().add(esito);
+		if (esame.getEsito() == null) {
+			esame.setEsito(new ArrayList<>());
+		}
+		esame.getEsito().add(esito);
+		utenteServ.edit(utente);
+		esameServ.edit(esame);
+		esitoServ.add(esito);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Utente docente = utenteServ.findByUsername(auth.getName());
+		modelAndView.addObject("messaggio", "voto aggiunto");
+		modelAndView.setViewName("docente/homeD");
+		modelAndView.addObject("listaEsamiCreati", docente.getListaEsami());
+
+		return modelAndView;
+	}
+
 }

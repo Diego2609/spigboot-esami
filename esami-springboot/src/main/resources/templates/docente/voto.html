@@ -13,7 +13,7 @@
 </head>
 <body>
 
- <form autocomplete="off" action="#" th:action="@{/docente/voto}"
+ <form autocomplete="off" action="#" th:action="@{/docente/esito}"
                   th:object="${esito}" method="post" class="form-horizontal"
                   role="form">
                  <label th:if="${esito.getVoto()}!=null"><span th:text="${esito.getVoto()}"></span></label>
