@@ -18,6 +18,7 @@
                   role="form">
                  <label th:if="${esito.getVoto()}!=null"><span th:text="${esito.getVoto()}"></span></label>
                  <label th:unless="${esito.getVoto()}!=null"><input type="number" th:field="*{voto}" placeholder="Voto" min="0" max="30">
+                  <input type="hidden" name="id" id="id"	th:value="${esito.getId()}">
                  <button type="submit" class="btn btn-primary"></button></label>
 </form>
 

@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import it.dstech.formazione.models.Docente;
 import it.dstech.formazione.models.Esame;
 import it.dstech.formazione.models.Esito;
-import it.dstech.formazione.models.Studente;
 import it.dstech.formazione.models.Utente;
 import it.dstech.formazione.service.EsameServiceDAO;
 import it.dstech.formazione.service.EsitoServiceDAO;
@@ -150,12 +148,14 @@ public class SessioneController {
 	}
 
 	@PostMapping(value = "/docente/esito")
-	public ModelAndView esito(Esito esito) {
+	public ModelAndView esito(@RequestParam Long id, Esito esito) {
 		ModelAndView modelAndView = new ModelAndView();
+		Esito esitoComposto = esitoServ.findById(id);
+		esitoComposto.setVoto(esito.getVoto());
 		Utente utente = esito.getUtente();
 		Esame esame = esito.getEsame();
 		if (utente.getListaEsiti() == null) {
-			utente.setListaEsami(new ArrayList<>());
+			utente.setListaEsiti(new ArrayList<>());
 		}
 		utente.getListaEsiti().add(esito);
 		if (esame.getEsito() == null) {
