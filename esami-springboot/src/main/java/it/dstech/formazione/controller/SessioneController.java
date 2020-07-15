@@ -90,16 +90,16 @@ public class SessioneController {
 		esameServ.edit(esame);
 		studente.getListaEsami().add(esame);
 		utenteServ.edit(studente);
-		modelAndView.setViewName("studente/homeS");		
+		modelAndView.setViewName("studente/homeS");
 		modelAndView.addObject("listaEsami", esameServ.filtraEsami(studente.getListaEsami(), studente.getIdUtente()));
 		modelAndView.addObject("listaEsamiIscritti", studente.getListaEsami());
-		Double media= utenteServ.media(studente);
-		if(media!=null)
-		 modelAndView.addObject("media",media );
+		Double media = utenteServ.media(studente);
+		if (media != null)
+			modelAndView.addObject("media", media);
 		else {
-			modelAndView.addObject("media","non hai svolto ancora esami" );
+			modelAndView.addObject("media", "non hai svolto ancora esami");
 
-		}			
+		}
 		modelAndView.addObject("messaggio", "Ti sei iscritto correttamente all'esame");
 		modelAndView.setViewName("studente/homeS");
 		modelAndView.addObject("idUtente", studente.getIdUtente());
@@ -112,16 +112,14 @@ public class SessioneController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Utente studente = utenteServ.findByUsername(auth.getName());
 		modelAndView.setViewName("studente/homeS");
-		
 		modelAndView.addObject("listaEsami", esameServ.filtraEsami(studente.getListaEsami(), studente.getIdUtente()));
-		modelAndView.addObject("listaEsamiIscritti", studente.getListaEsami());
-		Double media= utenteServ.media(studente);
-		if(media!=null)
-		 modelAndView.addObject("media",media );
+		modelAndView.addObject("listaEsamiIscritti", esameServ.ordinaPerVoto(studente.getListaEsami(), studente.getIdUtente()));
+		Double media = utenteServ.media(studente);
+		if (media != null)
+			modelAndView.addObject("media", media);
 		else {
-			modelAndView.addObject("media","non hai svolto ancora esami" );
-
-		}		
+			modelAndView.addObject("media", "non hai svolto ancora esami");
+		}
 		modelAndView.addObject("idUtente", studente.getIdUtente());
 		return modelAndView;
 	}
@@ -161,13 +159,13 @@ public class SessioneController {
 	}
 
 	@PostMapping(value = "/docente/esito")
-	public ModelAndView esito(Esito esito,@RequestParam("idUtente")Long idUtente,@RequestParam("idEsame")Long idEsame,
-			@RequestParam("idEsito")Long idEsito) {
+	public ModelAndView esito(Esito esito, @RequestParam("idUtente") Long idUtente,
+			@RequestParam("idEsame") Long idEsame, @RequestParam("idEsito") Long idEsito) {
 		ModelAndView modelAndView = new ModelAndView();
 		esito.setId(idEsito);
 		esito.setEsame(esameServ.findById(idEsame));
 		esito.setUtente(utenteServ.findById(idUtente));
-		esitoServ.add(esito);	
+		esitoServ.add(esito);
 		Utente utente = esito.getUtente();
 		Esame esame = esito.getEsame();
 		if (utente.getListaEsiti() == null) {
@@ -178,7 +176,7 @@ public class SessioneController {
 			esame.setEsito(new ArrayList<>());
 		}
 		utente.getListaEsiti().add(esito);
-		utenteServ.edit(utente);		
+		utenteServ.edit(utente);
 		esame.getEsito().add(esito);
 		esameServ.edit(esame);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -189,5 +187,10 @@ public class SessioneController {
 		modelAndView.addObject("esame", new Esame());
 		return modelAndView;
 	}
-
+@PostMapping(value="/docente/indietro")
+public ModelAndView docenteIndietro() {
+	ModelAndView modelAndView = new ModelAndView();
+	modelAndView.setViewName("redirect:/docente/homeD");
+	return modelAndView;
+}
 }

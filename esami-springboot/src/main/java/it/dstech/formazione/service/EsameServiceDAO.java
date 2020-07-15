@@ -18,5 +18,5 @@ public interface EsameServiceDAO {
 
 	List<Esame> filtraEsami(List<Esame> listaEsamiSvolti,Long idUtente);
 	
-
+	List<Esame> ordinaPerVoto(List<Esame> listaEsami, Long idUtente);
 }
