@@ -90,10 +90,8 @@ public class SessioneController {
 		esameServ.edit(esame);
 		studente.getListaEsami().add(esame);
 		utenteServ.edit(studente);
-		modelAndView.setViewName("studente/homeS");
-		List<Esame> esami = esameServ.findAll();
-		esami.removeAll(studente.getListaEsami());
-		modelAndView.addObject("listaEsami", esami);
+		modelAndView.setViewName("studente/homeS");		
+		modelAndView.addObject("listaEsami", esameServ.filtraEsami(studente.getListaEsami(), studente.getIdUtente()));
 		modelAndView.addObject("listaEsamiIscritti", studente.getListaEsami());
 		Double media= utenteServ.media(studente);
 		if(media!=null)
@@ -114,9 +112,8 @@ public class SessioneController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Utente studente = utenteServ.findByUsername(auth.getName());
 		modelAndView.setViewName("studente/homeS");
-		List<Esame> esami = esameServ.findAll();
-		esami.removeAll(studente.getListaEsami());
-		modelAndView.addObject("listaEsami", esami);
+		
+		modelAndView.addObject("listaEsami", esameServ.filtraEsami(studente.getListaEsami(), studente.getIdUtente()));
 		modelAndView.addObject("listaEsamiIscritti", studente.getListaEsami());
 		Double media= utenteServ.media(studente);
 		if(media!=null)

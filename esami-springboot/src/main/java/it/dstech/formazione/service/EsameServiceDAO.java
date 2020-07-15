@@ -16,6 +16,7 @@ public interface EsameServiceDAO {
 
 	Esame findById(Long Id);
 
+	List<Esame> filtraEsami(List<Esame> listaEsamiSvolti,Long idUtente);
 	
 
 }
