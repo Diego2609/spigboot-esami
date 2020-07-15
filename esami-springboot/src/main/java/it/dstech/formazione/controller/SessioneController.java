@@ -128,7 +128,7 @@ public class SessioneController {
 		}
 		modelAndView.addObject("idUtente", studente.getIdUtente());
 		String bocciature =  esameServ.esamePiuBocciato(studente.getListaEsami(), studente.getIdUtente());
-		if (bocciature != null) {
+		if (!bocciature.equals("")){
 			modelAndView.addObject("bocciature", bocciature);
 		} else {
 			modelAndView.addObject("bocciature", "Non sei ANCORA mai stato bocciato");

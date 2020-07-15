@@ -81,16 +81,17 @@ public class EsameServiceDAOImpl implements EsameServiceDAO {
 		}
 
 		List<Esame> listaEsamiBocciato = new ArrayList<Esame>(mappaEsamiBocciati.values());
+		List<String> listeMaterieBocciato = new ArrayList<String>(mappaEsamiBocciati.keySet());
 
 		for (Esame esame : listaTuttiEsami) {
-
+			if (!listeMaterieBocciato.contains(esame.getMateria())) {
+				listaEsamiChePuoFare.add(esame);
+			}
 			if (listaEsamiBocciato.size() > 0) {
 				for (Esame esameBocciato : listaEsamiBocciato) {
 					if (esame.getMateria().equals(esameBocciato.getMateria())) {
 						listaEsamiChePuoFare
 								.addAll(checkEsame(esame.getMateria(), esameBocciato.getId(), listaTuttiEsami));
-					} else {
-						listaEsamiChePuoFare.add(esame);
 					}
 				}
 			} else
