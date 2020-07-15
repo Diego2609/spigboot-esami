@@ -151,4 +151,31 @@ public class EsameServiceDAOImpl implements EsameServiceDAO {
 		return listaEsami;
 
 	}
+
+	public String esamePiuBocciato(List<Esame> esamiSvolti, Long idUtente) {
+		List<String> esamiBocciati = new ArrayList<String>();
+		for (Esame esame : esamiSvolti) {
+			for (Esito esito : esame.getEsito()) {
+				if (esito.getUtente().getIdUtente() == idUtente) {
+					if (esito.getVoto() < 18)
+						esamiBocciati.add(esame.getMateria());
+				}
+			}
+		}
+		int numeroBocciatura = 0;
+		String materiaBocciatura = "";
+		for (int i = 0; i < esamiBocciati.size(); i++) {
+			int counter = 0;
+			for (int j = 0; j < esamiBocciati.size(); j++) {
+				if (esamiBocciati.get(i).equals(esamiBocciati.get(j))) {
+					counter++;
+				}
+			}
+			if (numeroBocciatura < counter) {
+				numeroBocciatura = counter;
+				materiaBocciatura = esamiBocciati.get(i);
+			}
+		}
+		return materiaBocciatura;
+	}
 }

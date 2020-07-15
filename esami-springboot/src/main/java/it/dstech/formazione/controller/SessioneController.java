@@ -100,6 +100,12 @@ public class SessioneController {
 			modelAndView.addObject("media", "non hai svolto ancora esami");
 
 		}
+		String bocciature =  esameServ.esamePiuBocciato(studente.getListaEsami(), studente.getIdUtente());
+		if (bocciature != null) {
+			modelAndView.addObject("bocciature", bocciature);
+		} else {
+			modelAndView.addObject("bocciature", "Non sei ANCORA mai stato bocciato");
+		}
 		modelAndView.addObject("messaggio", "Ti sei iscritto correttamente all'esame");
 		modelAndView.setViewName("studente/homeS");
 		modelAndView.addObject("idUtente", studente.getIdUtente());
@@ -118,9 +124,16 @@ public class SessioneController {
 		if (media != null)
 			modelAndView.addObject("media", media);
 		else {
-			modelAndView.addObject("media", "non hai svolto ancora esami");
+			modelAndView.addObject("media", "Non hai svolto ancora esami");
 		}
 		modelAndView.addObject("idUtente", studente.getIdUtente());
+		String bocciature =  esameServ.esamePiuBocciato(studente.getListaEsami(), studente.getIdUtente());
+		if (bocciature != null) {
+			modelAndView.addObject("bocciature", bocciature);
+		} else {
+			modelAndView.addObject("bocciature", "Non sei ANCORA mai stato bocciato");
+		}
+		
 		return modelAndView;
 	}
 

@@ -17,9 +17,12 @@
 		<span class="text-success" th:utext="${messaggio}"></span>
 	</h2>
 
-	la media è :
-	<p th:text="${media}"></p>
-	Esami Dove Gia Sei Iscritto
+	La media è :
+	<p th:text="${media}"></p> <br><br>
+	
+	L'esame con più bocciature è:
+	<p th:text="${bocciature}"></p> <br><br>
+	Esami Dove Già Sei Iscritto:
 	<table class="table table-striped table-responsive-md">
 		<thead>
 			<tr>
@@ -43,7 +46,7 @@
 			</tr>
 		</tbody>
 	</table>
-
+<p>Esami ai quali puoi iscriverti:</p>
 	<table class="table table-striped table-responsive-md">
 		<thead>
 			<tr>
